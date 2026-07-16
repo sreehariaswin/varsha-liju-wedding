@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Varsha &amp; Liju — Wedding Invitation</title>
+
+<!-- ── WhatsApp / Social preview ──
+     NOTE: replace YOUR-USERNAME and YOUR-REPO below with your GitHub details,
+     and upload a preview.jpg (1200x630) to the repo for the link thumbnail. -->
+<meta name="description" content="Join us to celebrate the wedding of Varsha & Liju — Sunday, 13 September 2026 · St. Mary's Convention Centre, Nellayi, Thrissur."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://YOUR-USERNAME.github.io/YOUR-REPO/"/>
+<meta property="og:title" content="💍 Varsha &amp; Liju — Wedding Invitation"/>
+<meta property="og:description" content="Sunday, 13 September 2026 · Muhurtham 9:30–10:00 AM · St. Mary's Convention Centre, Nellayi, Thrissur 🪔"/>
+<meta property="og:image" content="https://YOUR-USERNAME.github.io/YOUR-REPO/preview.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="💍 Varsha &amp; Liju — Wedding Invitation"/>
+<meta name="twitter:description" content="Sunday, 13 September 2026 · Muhurtham 9:30–10:00 AM · Nellayi, Thrissur 🪔"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Marcellus&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --champagne:#fdf9ef;     /* page base */
+  --champagne2:#f9f0dc;    /* soft section tint */
+  --champagne3:#f3e6c8;    /* deeper warm tint */
+  --gold:#a8792a;          /* primary gold for text/lines */
+  --gold-deep:#8a6015;     /* strong gold headings */
+  --gold-soft:#d8b76a;     /* light gold rules */
+  --gold-pale:#efe0b4;
+  --maroon:#6b2416;        /* accent — kumkum warmth */
+  --text:#3d2410;          /* main text, warm brown */
+  --text-soft:#6b4d28;     /* secondary text */
+  --flame:#f4a83a;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--champagne);
+  color:var(--text);
+  font-family:'EB Garamond',serif;
+  overflow-x:hidden;
+}
+canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+/* ═══ KASAVU BANDS (Kerala sari border framing the page) ═══ */
+.kasavu{
+  position:relative;z-index:5;height:26px;width:100%;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--gold-soft) 0 3px, var(--gold) 3px 5px,
+      var(--gold-soft) 5px 8px, transparent 8px 22px);
+  border-top:3px solid var(--gold);
+  border-bottom:3px solid var(--gold);
+  background-color:#fffdf6;
+}
+.kasavu.thin{height:12px;border-width:2px}
+
+/* ═══ HERO ═══ */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;
+  padding:3.5rem 1.4rem 4.5rem;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 28%, rgba(244,168,58,0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 120% 70% at 50% 110%, rgba(216,183,106,0.28) 0%, transparent 60%),
+    linear-gradient(175deg, #fffcf3 0%, var(--champagne2) 55%, var(--champagne3) 100%);
+}
+.hero-frame{
+  position:absolute;inset:16px;
+  border:1px solid rgba(168,121,42,0.4);
+  pointer-events:none;
+}
+.hero-frame::before{
+  content:'';position:absolute;inset:6px;
+  border:1px solid rgba(168,121,42,0.18);
+}
+.corner{position:absolute;width:26px;height:26px;border:2px solid var(--gold);opacity:0.9}
+.corner.tl{top:-2px;left:-2px;border-right:none;border-bottom:none}
+.corner.tr{top:-2px;right:-2px;border-left:none;border-bottom:none}
+.corner.bl{bottom:-2px;left:-2px;border-right:none;border-top:none}
+.corner.br{bottom:-2px;right:-2px;border-left:none;border-top:none}
+
+.hero-inner{position:relative;z-index:2;max-width:660px;width:100%}
+
+.invocation{
+  font-family:'Marcellus',serif;
+  font-size:clamp(0.78rem,2vw,0.95rem);
+  letter-spacing:0.28em;
+  color:var(--maroon);
+  opacity:0;animation:rise 1.1s 0.2s forwards;
+}
+
+/* ── NILAVILAKKU — the brass lamp ── */
+.lamp-wrap{
+  position:relative;display:inline-block;
+  margin:1.6rem 0 1.2rem;
+  opacity:0;animation:rise 1.3s 0.55s forwards;
+}
+.lamp-glow{
+  position:absolute;left:50%;top:14px;transform:translateX(-50%);
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle, rgba(226,180,94,0.34) 0%, rgba(226,180,94,0.1) 45%, transparent 70%);
+  animation:glowPulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+.leaves{transform-origin:59px 58px;animation:leafSway 4.5s ease-in-out infinite}
+
+.presence-line{
+  font-style:italic;font-weight:400;
+  font-size:clamp(0.95rem,2.3vw,1.15rem);
+  letter-spacing:0.06em;line-height:1.9;
+  color:var(--text-soft);
+  opacity:0;animation:rise 1.1s 0.9s forwards;
+  margin-bottom:1.4rem;
+}
+.names-block{opacity:0;animation:rise 1.5s 1.2s forwards}
+.name-script{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(3.2rem,11.5vw,6.4rem);
+  line-height:1.15;display:block;
+  color:var(--maroon);
+  text-shadow:0 2px 24px rgba(168,121,42,0.22);
+}
+.name-with{
+  font-family:'Marcellus',serif;
+  font-size:clamp(0.72rem,1.8vw,0.9rem);
+  letter-spacing:0.55em;text-transform:uppercase;
+  color:var(--gold);display:block;
+  margin:0.55rem 0;
+}
+.hero-blessing{
+  font-style:italic;
+  font-size:clamp(0.92rem,2.2vw,1.08rem);
+  color:var(--text-soft);line-height:1.9;
+  opacity:0;animation:rise 1.1s 1.7s forwards;
+  margin-top:1.6rem;
+}
+.date-strip{
+  opacity:0;animation:rise 1.1s 2s forwards;
+  margin-top:1.6rem;display:inline-flex;flex-direction:column;align-items:center;
+}
+.date-rule{width:clamp(190px,52vw,330px);height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent)}
+.date-text{
+  font-family:'Marcellus',serif;
+  font-size:clamp(0.66rem,1.7vw,0.82rem);
+  letter-spacing:0.34em;text-transform:uppercase;
+  color:var(--gold-deep);padding:0.55rem 0;
+}
+.scroll-hint{
+  position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.35rem;
+  opacity:0;animation:rise 1s 3s forwards;z-index:2;
+}
+.scroll-hint span{
+  font-family:'Marcellus',serif;font-size:0.5rem;
+  letter-spacing:0.5em;text-transform:uppercase;
+  color:var(--text-soft);opacity:0.6;
+}
+.sh-line{width:1px;height:30px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:pulse 2s 3.4s ease-in-out infinite}
+
+/* ═══ SECTIONS ═══ */
+section{position:relative;z-index:2;padding:4.6rem 1.4rem}
+.wrap{max-width:720px;margin:0 auto;text-align:center}
+.eyebrow{
+  font-family:'Marcellus',serif;
+  font-size:0.62rem;letter-spacing:0.55em;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:1.6rem;
+}
+.divider{display:flex;align-items:center;justify-content:center;gap:0.8rem;margin:1.9rem auto}
+.div-rule{height:1px;flex:1;max-width:85px;
+  background:linear-gradient(to right,transparent,var(--gold-soft))}
+.div-rule.r{background:linear-gradient(to left,transparent,var(--gold-soft))}
+.div-motif{color:var(--gold);font-size:0.85rem;opacity:0.85}
+
+/* ═══ FAMILIES ═══ */
+.families-sec{
+  background:linear-gradient(180deg,var(--champagne) 0%,var(--champagne2) 50%,var(--champagne) 100%);
+}
+.fam-grid{
+  display:grid;grid-template-columns:1fr 44px 1fr;
+  gap:1rem 1.4rem;align-items:center;margin:2.4rem 0;
+}
+.fam-name{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(2rem,5vw,2.9rem);
+  color:var(--maroon);line-height:1.15;margin-bottom:0.5rem;
+}
+.fam-rel{
+  font-family:'Marcellus',serif;font-size:0.6rem;
+  letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:0.45rem;
+}
+.fam-parents{
+  font-style:italic;font-size:clamp(1rem,2.1vw,1.14rem);
+  color:var(--text);line-height:1.85;
+}
+.fam-house{
+  font-family:'Marcellus',serif;
+  font-size:clamp(0.62rem,1.5vw,0.74rem);
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gold-deep);margin-top:0.6rem;line-height:1.9;
+}
+.fam-sep{display:flex;flex-direction:column;align-items:center;gap:0.4rem}
+.fam-sep-v{width:1px;height:52px;
+  background:linear-gradient(to bottom,transparent,var(--gold),transparent)}
+.fam-sep-amp{font-family:'Pinyon Script',cursive;font-size:2rem;color:var(--gold);line-height:1}
+.invite-para{
+  font-style:italic;
+  font-size:clamp(1.04rem,2.4vw,1.2rem);
+  color:var(--text-soft);line-height:2;
+  max-width:560px;margin:0 auto;
+}
+
+/* ═══ COUNTDOWN ═══ */
+.countdown-sec{
+  background:
+    radial-gradient(ellipse 75% 60% at 50% 50%, rgba(216,183,106,0.22) 0%, transparent 70%),
+    var(--champagne2);
+}
+.cd-title{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(2.2rem,6vw,3.4rem);
+  color:var(--maroon);margin-bottom:0.4rem;
+}
+.cd-subtitle{font-style:italic;font-size:clamp(0.92rem,2vw,1.08rem);
+  color:var(--text-soft);margin-bottom:2.4rem}
+.cd-grid{display:flex;justify-content:center;gap:clamp(0.6rem,3.5vw,2.4rem);flex-wrap:wrap}
+.cd-item{
+  text-align:center;min-width:76px;
+  padding:1rem 0.6rem 0.85rem;
+  border:1px solid rgba(168,121,42,0.35);
+  background:rgba(255,253,246,0.75);
+  box-shadow:0 6px 22px rgba(168,121,42,0.08);
+}
+.cd-num{
+  font-family:'Marcellus',serif;
+  font-size:clamp(2.4rem,6.5vw,3.8rem);
+  color:var(--gold-deep);line-height:1;display:block;
+}
+.cd-label{
+  font-family:'Marcellus',serif;font-size:0.52rem;
+  letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--text-soft);margin-top:0.45rem;display:block;opacity:0.75;
+}
+.cd-done{font-family:'Pinyon Script',cursive;font-size:2.1rem;color:var(--maroon)}
+
+/* ═══ EVENT ═══ */
+.event-sec{background:linear-gradient(180deg,var(--champagne),var(--champagne2) 60%,var(--champagne))}
+.ev-card{
+  max-width:520px;margin:2.6rem auto 0;position:relative;
+  border:1px solid rgba(168,121,42,0.38);
+  background:linear-gradient(160deg, #fffdf6, rgba(243,230,200,0.55));
+  box-shadow:0 14px 44px rgba(168,121,42,0.12);
+  padding:3rem 2rem 2.6rem;
+}
+.ev-card::before{
+  content:'';position:absolute;inset:7px;
+  border:1px solid rgba(168,121,42,0.18);pointer-events:none;
+}
+.ev-title{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(2.3rem,6vw,3.1rem);
+  color:var(--maroon);line-height:1.1;margin-bottom:1.6rem;font-weight:400;
+}
+.ev-medallion{
+  display:inline-flex;flex-direction:column;align-items:center;
+  border:1px solid rgba(168,121,42,0.42);
+  background:rgba(216,183,106,0.12);
+  padding:0.8rem 2rem;margin-bottom:1.5rem;
+}
+.ev-day-word{font-family:'Marcellus',serif;font-size:0.62rem;
+  letter-spacing:0.42em;text-transform:uppercase;color:var(--text-soft)}
+.ev-day-num{font-family:'Marcellus',serif;font-size:3.2rem;color:var(--gold-deep);line-height:1.15}
+.ev-month{font-family:'Marcellus',serif;font-size:0.68rem;
+  letter-spacing:0.34em;text-transform:uppercase;color:var(--gold)}
+.ev-rule{width:40px;height:1px;background:var(--gold-soft);margin:1.1rem auto}
+.ev-muhurtham-label{
+  font-family:'Marcellus',serif;font-size:0.6rem;
+  letter-spacing:0.5em;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:0.4rem;
+}
+.ev-time{font-style:italic;font-size:clamp(1.1rem,2.6vw,1.28rem);
+  color:var(--maroon);margin-bottom:1.3rem}
+.ev-venue{font-size:1.05rem;color:var(--text-soft);line-height:1.85}
+.ev-venue strong{
+  font-style:italic;font-weight:500;color:var(--text);
+  font-size:1.16rem;display:block;margin-bottom:0.2rem;
+}
+.map-link{
+  display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+  margin-top:1.7rem;padding:0.78rem 1.9rem;
+  border:1px solid rgba(168,121,42,0.5);
+  font-family:'Marcellus',serif;font-size:0.6rem;
+  letter-spacing:0.36em;text-transform:uppercase;
+  color:var(--gold-deep);text-decoration:none;
+  transition:background 0.3s,border-color 0.3s;
+}
+.map-link:hover,.map-link:focus-visible{background:rgba(216,183,106,0.18);border-color:var(--gold)}
+a:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
+
+/* ═══ CLOSING ═══ */
+.closing-sec{
+  background:
+    radial-gradient(ellipse 80% 65% at 50% 100%, rgba(216,183,106,0.3) 0%, transparent 65%),
+    var(--champagne);
+  padding-bottom:5.5rem;
+}
+.closing-names{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(2.6rem,9vw,4.6rem);
+  color:var(--maroon);line-height:1.25;margin:0.6rem 0;
+  text-shadow:0 2px 26px rgba(168,121,42,0.2);
+}
+.blessing-line{
+  font-style:italic;font-size:clamp(1rem,2.3vw,1.16rem);
+  color:var(--text-soft);line-height:2;max-width:520px;margin:1.4rem auto 0;
+}
+.with-love{
+  font-style:italic;font-size:1rem;color:var(--text-soft);margin-top:1.9rem;
+}
+.with-love .signer{
+  font-family:'Pinyon Script',cursive;font-style:normal;
+  font-size:1.7em;color:var(--gold-deep);display:block;margin-top:0.3rem;
+}
+.foot-rule{width:130px;height:1px;margin:2.4rem auto 0;
+  background:linear-gradient(to right,transparent,var(--gold),transparent)}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.4;transform:scaleY(0.6)}50%{opacity:1;transform:scaleY(1)}}
+@keyframes leafSway{
+  0%,100%{transform:rotate(0deg)}
+  35%{transform:rotate(1.4deg)}
+  70%{transform:rotate(-1.2deg)}
+}
+@keyframes glowPulse{0%,100%{opacity:0.8;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.12)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s ease}
+.reveal.on{opacity:1;transform:none}
+.reveal.d2{transition-delay:0.15s}
+.reveal.d3{transition-delay:0.3s}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .invocation,.lamp-wrap,.presence-line,.names-block,.hero-blessing,.date-strip,.scroll-hint{opacity:1}
+  canvas#petals{display:none}
+}
+
+/* ═══ MOBILE ═══ */
+@media(max-width:480px){
+  .hero{padding:2.4rem 1rem 4rem}
+  .hero-frame{inset:11px}
+  .name-script{font-size:clamp(2.9rem,15vw,4.2rem)}
+  .name-with{letter-spacing:0.4em;font-size:0.66rem}
+  .presence-line{font-size:0.92rem}
+  section{padding:3.4rem 1.1rem}
+  .fam-grid{grid-template-columns:1fr;gap:1.9rem}
+  .fam-sep{flex-direction:row;justify-content:center}
+  .fam-sep-v{width:52px;height:1px;
+    background:linear-gradient(to right,transparent,var(--gold),transparent)}
+  .cd-grid{gap:0.55rem}
+  .cd-item{min-width:64px;padding:0.8rem 0.4rem 0.7rem}
+  .cd-num{font-size:2.2rem}
+  .cd-label{font-size:0.46rem;letter-spacing:0.28em}
+  .ev-card{padding:2.3rem 1.2rem 2.1rem}
+  .map-link{width:100%;padding:0.95rem 1.2rem}
+  .closing-sec{padding-bottom:4rem}
+}
+</style>
+</head>
+<body>
+
+<canvas id="petals"></canvas>
+
+<div class="kasavu" aria-hidden="true"></div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-frame" aria-hidden="true">
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
+  </div>
+
+  <div class="hero-inner">
+    <p class="invocation">ॐ &nbsp;श्री गणेशाय नमः</p>
+
+    <!-- Purna Kumbham / Kalasham — brass pot, mango leaves & coconut -->
+    <div class="lamp-wrap" aria-hidden="true">
+      <div class="lamp-glow"></div>
+      <svg width="118" height="132" viewBox="0 0 118 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- mango leaves fanning around the neck -->
+        <g class="leaves">
+          <path d="M59 58 C42 52 30 42 24 28 C36 30 50 40 59 54 Z" fill="#4a7a2c"/>
+          <path d="M59 58 C76 52 88 42 94 28 C82 30 68 40 59 54 Z" fill="#4a7a2c"/>
+          <path d="M59 56 C48 46 42 34 41 20 C51 26 58 40 60 52 Z" fill="#5c8f38"/>
+          <path d="M59 56 C70 46 76 34 77 20 C67 26 60 40 58 52 Z" fill="#5c8f38"/>
+          <path d="M56 54 C50 42 50 30 55 18 C60 28 61 42 59 52 Z" fill="#6da344"/>
+          <path d="M62 54 C68 42 68 30 63 18 C58 28 57 42 59 52 Z" fill="#6da344"/>
+          <!-- leaf midribs -->
+          <path d="M28 31 C38 34 50 44 57 54" stroke="#38621f" stroke-width="0.8" opacity="0.6" fill="none"/>
+          <path d="M90 31 C80 34 68 44 61 54" stroke="#38621f" stroke-width="0.8" opacity="0.6" fill="none"/>
+        </g>
+        <!-- coconut resting on the leaves -->
+        <ellipse cx="59" cy="38" rx="15" ry="16" fill="#9c6b3a"/>
+        <ellipse cx="59" cy="38" rx="15" ry="16" fill="url(#cocoShade)"/>
+        <path d="M59 22.5 C56 26 55 30 55.5 33" stroke="#7a4f26" stroke-width="1" fill="none" opacity="0.7"/>
+        <path d="M59 22.5 C62 26 63 30 62.5 33" stroke="#7a4f26" stroke-width="1" fill="none" opacity="0.7"/>
+        <ellipse cx="53" cy="34" rx="3.4" ry="4.4" fill="#8a5c30" opacity="0.5"/>
+        <ellipse cx="65" cy="34" rx="3.4" ry="4.4" fill="#8a5c30" opacity="0.5"/>
+        <!-- pot rim -->
+        <path d="M38 60 Q59 66 80 60 L77 68 Q59 73 41 68 Z" fill="#c9963a"/>
+        <ellipse cx="59" cy="60.5" rx="21" ry="4" fill="#e2b45e"/>
+        <!-- pot neck -->
+        <path d="M43 68 Q59 73 75 68 L73 75 Q59 79 45 75 Z" fill="#b8842e"/>
+        <!-- pot body -->
+        <path d="M45 75 C24 80 20 100 34 112 C42 119 76 119 84 112 C98 100 94 80 73 75 C64 73 54 73 45 75 Z" fill="#c9963a"/>
+        <!-- body shading -->
+        <path d="M45 75 C28 80 23 98 34 110 C30 100 32 84 48 78 Z" fill="#e2b45e" opacity="0.75"/>
+        <path d="M73 75 C90 80 95 98 84 110 C88 100 86 84 70 78 Z" fill="#a8792a" opacity="0.75"/>
+        <!-- kumkum & sandal marks on the pot -->
+        <circle cx="59" cy="94" r="4" fill="#a83226"/>
+        <circle cx="59" cy="94" r="1.6" fill="#f2d488"/>
+        <path d="M48 92 L48 100 M70 92 L70 100" stroke="#f2d488" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
+        <!-- decorative bands -->
+        <path d="M36 106 Q59 113 82 106" stroke="#8a6015" stroke-width="1.4" fill="none" opacity="0.55"/>
+        <path d="M40 84 Q59 89 78 84" stroke="#f2d488" stroke-width="1.2" fill="none" opacity="0.6"/>
+        <!-- base plate -->
+        <ellipse cx="59" cy="120" rx="30" ry="5" fill="#a8792a"/>
+        <ellipse cx="59" cy="124" rx="36" ry="5.4" fill="#8a6015"/>
+        <!-- highlight -->
+        <ellipse cx="46" cy="90" rx="3" ry="7" fill="#f7dfa0" opacity="0.65" transform="rotate(-16,46,90)"/>
+        <defs>
+          <radialGradient id="cocoShade" cx="0.38" cy="0.32" r="0.9">
+            <stop offset="0" stop-color="#c08a4e" stop-opacity="0.9"/>
+            <stop offset="0.6" stop-color="#9c6b3a" stop-opacity="0"/>
+            <stop offset="1" stop-color="#6e4520" stop-opacity="0.55"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <p class="presence-line">Together with our families,<br>
+      we request the honour of your presence<br>
+      at the wedding ceremony of</p>
+
+    <div class="names-block">
+      <span class="name-script">Varsha Raman Pradeep</span>
+      <span class="name-with">With</span>
+      <span class="name-script">Liju Lalesh</span>
+    </div>
+
+    <p class="hero-blessing">as they unite in love and begin<br>a beautiful journey of togetherness</p>
+
+    <div class="date-strip">
+      <div class="date-rule"></div>
+      <p class="date-text">Sunday &ensp;·&ensp; 13 September 2026</p>
+      <div class="date-rule"></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="sh-line"></div>
+  </div>
+</section>
+
+<div class="kasavu thin" aria-hidden="true"></div>
+
+<!-- ══ FAMILIES ══ -->
+<section class="families-sec">
+  <div class="wrap">
+    <span class="eyebrow reveal">With the blessings of</span>
+
+    <div class="fam-grid reveal">
+      <div>
+        <p class="fam-name">Varsha</p>
+        <span class="fam-rel">Daughter of</span>
+        <p class="fam-parents">Mr. Pradeep Kumar <em>(Late)</em><br>&amp; Mrs. Prema C. K. <em>(Late)</em></p>
+        <p class="fam-house">Kalathil House<br>Near Thiruthur Sreekrishna Temple<br>Kodakara P.O., Thrissur</p>
+      </div>
+      <div class="fam-sep" aria-hidden="true">
+        <div class="fam-sep-v"></div>
+        <span class="fam-sep-amp">&amp;</span>
+        <div class="fam-sep-v"></div>
+      </div>
+      <div>
+        <p class="fam-name">Liju</p>
+        <span class="fam-rel">Son of</span>
+        <p class="fam-parents">Mr. K. K. Lalesh<br>&amp; Mrs. Preny Lalesh</p>
+        <p class="fam-house">Koodathinkal House<br>Kuzhitholu, Kattappana<br>Idukki</p>
+      </div>
+    </div>
+
+    <div class="divider reveal" aria-hidden="true">
+      <div class="div-rule"></div><span class="div-motif">✦</span><div class="div-rule r"></div>
+    </div>
+
+    <p class="invite-para reveal">
+      Kindly grace the occasion with your esteemed presence and prayers,
+      along with your family, and bless the couple on this auspicious day.
+    </p>
+  </div>
+</section>
+
+<!-- ══ COUNTDOWN ══ -->
+<section class="countdown-sec">
+  <div class="wrap">
+    <span class="eyebrow reveal">The auspicious hour approaches</span>
+    <p class="cd-title reveal">Counting down</p>
+    <p class="cd-subtitle reveal">to the muhurtham — 13 September 2026, 9:30 AM</p>
+    <div class="cd-grid reveal" id="cdWrap">
+      <div class="cd-item"><span class="cd-num" id="cdD">--</span><span class="cd-label">Days</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdH">--</span><span class="cd-label">Hours</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdM">--</span><span class="cd-label">Minutes</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdS">--</span><span class="cd-label">Seconds</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EVENT ══ -->
+<section class="event-sec">
+  <div class="wrap">
+    <span class="eyebrow reveal">You are warmly invited to</span>
+
+    <div class="ev-card reveal">
+      <h2 class="ev-title">Wedding Ceremony</h2>
+
+      <div class="ev-medallion">
+        <span class="ev-day-word">Sunday</span>
+        <span class="ev-day-num">13</span>
+        <span class="ev-month">September · 2026</span>
+      </div>
+
+      <div class="ev-rule" aria-hidden="true"></div>
+
+      <span class="ev-muhurtham-label">Muhurtham</span>
+      <p class="ev-time">Between 9:30 AM &amp; 10:00 AM</p>
+
+      <p class="ev-venue">
+        <strong>St. Mary's Convention Centre</strong>
+        Nellayi, Thrissur
+      </p>
+
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=St.+Mary's+Convention+Centre+Nellayi+Thrissur"
+         target="_blank" rel="noopener" class="map-link">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Get Directions
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSING ══ -->
+<section class="closing-sec">
+  <div class="wrap">
+    <span class="eyebrow reveal">With hearts full of joy</span>
+
+    <p class="closing-names reveal">Varsha &amp; Liju</p>
+
+    <div class="divider reveal" aria-hidden="true">
+      <div class="div-rule"></div><span class="div-motif">✦</span><div class="div-rule r"></div>
+    </div>
+
+    <p class="blessing-line reveal">
+      Your gracious presence and blessings<br>
+      will make our celebration truly memorable.
+    </p>
+
+    <p class="with-love reveal">
+      With love —
+      <span class="signer">Friends &amp; Families</span>
+    </p>
+
+    <div class="foot-rule reveal" aria-hidden="true"></div>
+  </div>
+</section>
+
+<div class="kasavu" aria-hidden="true"></div>
+
+<script>
+/* ── COUNTDOWN — muhurtham begins 9:30 AM IST ── */
+function tick(){
+  const diff = new Date('2026-09-13T09:30:00+05:30').getTime() - Date.now();
+  if(diff <= 0){
+    document.getElementById('cdWrap').innerHTML =
+      '<p class="cd-done">Wishing Varsha &amp; Liju a lifetime of love 🪔</p>';
+    clearInterval(cdTimer);
+    return;
+  }
+  const p = n => String(n).padStart(2,'0');
+  document.getElementById('cdD').textContent = Math.floor(diff/864e5);
+  document.getElementById('cdH').textContent = p(Math.floor(diff%864e5/36e5));
+  document.getElementById('cdM').textContent = p(Math.floor(diff%36e5/6e4));
+  document.getElementById('cdS').textContent = p(Math.floor(diff%6e4/1e3));
+}
+tick();
+const cdTimer = setInterval(tick, 1000);
+
+/* ── SCROLL REVEAL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── DRIFTING MARIGOLD PETALS ── */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduceMotion){
+  const cv = document.getElementById('petals');
+  const ctx = cv.getContext('2d');
+  const resize = () => { cv.width = innerWidth; cv.height = innerHeight; };
+  resize(); addEventListener('resize', resize);
+
+  /* warm marigold + soft gold tones for a light background */
+  const COLS = [
+    'rgba(230,140,40,0.4)',
+    'rgba(214,120,30,0.34)',
+    'rgba(200,150,60,0.32)',
+    'rgba(238,170,70,0.36)',
+    'rgba(190,110,40,0.28)',
+  ];
+
+  class Petal {
+    constructor(init){
+      this.x = Math.random() * cv.width;
+      this.y = init ? Math.random() * cv.height : -14;
+      this.sz = Math.random() * 6 + 3;
+      this.vy = Math.random() * 0.5 + 0.16;
+      this.vx = (Math.random() - .5) * 0.26;
+      this.rot = Math.random() * Math.PI * 2;
+      this.rs = (Math.random() - .5) * 0.018;
+      this.col = COLS[Math.floor(Math.random() * COLS.length)];
+      this.wb = Math.random() * Math.PI * 2;
+      this.ws = Math.random() * 0.014 + 0.005;
+      this.round = Math.random() > 0.5;
+    }
+    step(){
+      this.wb += this.ws;
+      this.x += this.vx + Math.sin(this.wb) * 0.36;
+      this.y += this.vy;
+      this.rot += this.rs;
+      if(this.y > cv.height + 16){ this.x = Math.random() * cv.width; this.y = -14; }
+    }
+    draw(){
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rot);
+      ctx.fillStyle = this.col;
+      ctx.beginPath();
+      this.round
+        ? ctx.arc(0, 0, this.sz * .5, 0, Math.PI * 2)
+        : ctx.ellipse(0, 0, this.sz * .42, this.sz, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  const petals = Array.from({ length: 38 }, () => new Petal(true));
+  (function loop(){
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    petals.forEach(p => { p.step(); p.draw(); });
+    requestAnimationFrame(loop);
+  })();
+}
+</script>
+</body>
+</html>

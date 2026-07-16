@@ -103,14 +103,35 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
 .cnr.bl{bottom:6px;left:6px;transform:scaleY(-1)}
 .cnr.br{bottom:6px;right:6px;transform:scale(-1)}
 
-/* slow-turning mandala breathing behind the names */
-.mandala{
+/* slow-turning mandala breathing behind the names — sits in a parallax layer */
+.mandala-wrap{
   position:absolute;left:50%;top:50%;
   width:clamp(340px,80vw,560px);height:clamp(340px,80vw,560px);
-  transform:translate(-50%,-50%);
-  opacity:0.35;pointer-events:none;z-index:0;
+  --px:0px;--py:0px;
+  transform:translate(calc(-50% + var(--px)), calc(-50% + var(--py)));
+  pointer-events:none;z-index:0;
+  will-change:transform;
+}
+.mandala{
+  width:100%;height:100%;display:block;opacity:0.35;
   animation:spin 90s linear infinite;
 }
+/* ── 3D tilt: the cover behaves like a card held in the hand ── */
+#p1{perspective:1100px}
+#p1 .inner{
+  transform-style:preserve-3d;
+  will-change:transform;
+  transition:transform 0.12s linear;
+}
+/* ── typed-out blessing ── */
+.request-line{min-height:calc(1.9em * 3)}  /* reserve 3 lines so nothing jumps */
+.caret{
+  display:inline-block;width:1px;height:0.95em;
+  background:var(--gold-deep);vertical-align:-0.12em;
+  margin-left:1px;
+  animation:caretBlink 0.85s step-end infinite;
+}
+@keyframes caretBlink{0%,100%{opacity:1}50%{opacity:0}}
 .om{
   font-size:clamp(0.85rem,2vw,0.98rem);letter-spacing:0.22em;
   color:var(--accent);font-weight:500;
@@ -304,7 +325,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
 @keyframes pulse{0%,100%{opacity:0.4;transform:scaleY(0.6)}50%{opacity:1;transform:scaleY(1)}}
 @keyframes sway{0%,100%{transform:rotate(0)}35%{transform:rotate(1.5deg)}70%{transform:rotate(-1.3deg)}}
 @keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:100% center}}
-@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.9s ease, transform 0.9s ease}
 .reveal.on{opacity:1;transform:none}
 .reveal.d2{transition-delay:0.15s}
@@ -354,8 +375,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
     <span class="cnr bl" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M2 28 C2 14 6 6 15 4 C10 8 8 13 8 18 M2 28 C14 28 22 24 26 15 C22 20 17 22 12 22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="5" cy="25" r="1.5" fill="currentColor"/></svg></span>
     <span class="cnr br" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M2 28 C2 14 6 6 15 4 C10 8 8 13 8 18 M2 28 C14 28 22 24 26 15 C22 20 17 22 12 22" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="5" cy="25" r="1.5" fill="currentColor"/></svg></span>
 
-    <!-- slow-turning mandala, whisper faint -->
-    <svg class="mandala" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+    <!-- slow-turning mandala, whisper faint (parallax layer) -->
+    <div class="mandala-wrap" id="mandalaWrap" aria-hidden="true">
+    <svg class="mandala" viewBox="0 0 400 400" fill="none">
       <g stroke="#b3873a" stroke-width="0.7" opacity="0.5">
         <circle cx="200" cy="200" r="190"/>
         <circle cx="200" cy="200" r="160"/>
@@ -379,8 +401,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
         <use href="#pt" transform="rotate(330 200 200)"/>
       </g>
     </svg>
+    </div>
 
-    <div class="inner">
+    <div class="inner" id="tiltCard">
       <p class="om">ॐ श्री गणेशाय नमः</p>
 
       <!-- Purna Kumbham — tap for a shower of blessings -->
@@ -413,9 +436,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
         </svg>
       </div>
 
-      <p class="request-line">Together with our families,<br>
-        we request the honour of your presence<br>
-        at the wedding ceremony of</p>
+      <p class="request-line" id="typeLine" aria-label="Together with our families, we request the honour of your presence at the wedding ceremony of"><span id="tl1"></span><br>
+        <span id="tl2"></span><br>
+        <span id="tl3"></span><span class="caret" id="caret" aria-hidden="true"></span></p>
 
       <div class="names">
         <span class="name">Varsha Raman Pradeep</span>
@@ -648,7 +671,99 @@ if(!reduceMotion){
   })();
 }
 
-/* tap / press the kalasham → shower of marigolds */
+/* ── TYPED-OUT BLESSING — the invitation inks itself in ── */
+(function(){
+  const lines = [
+    ['tl1', 'Together with our families,'],
+    ['tl2', 'we request the honour of your presence'],
+    ['tl3', 'at the wedding ceremony of'],
+  ];
+  const caret = document.getElementById('caret');
+  if(reduceMotion){
+    lines.forEach(([id, txt]) => document.getElementById(id).textContent = txt);
+    caret.style.display = 'none';
+    return;
+  }
+  let li = 0, ci = 0;
+  function moveCaretTo(el){ el.after(caret); }
+  function typeNext(){
+    if(li >= lines.length){
+      setTimeout(() => caret.style.display = 'none', 1800);
+      return;
+    }
+    const [id, txt] = lines[li];
+    const el = document.getElementById(id);
+    moveCaretTo(el);
+    el.textContent = txt.slice(0, ++ci);
+    if(ci >= txt.length){ li++; ci = 0; setTimeout(typeNext, 320); }
+    else setTimeout(typeNext, 26 + Math.random() * 46);   /* uneven, like a hand writing */
+  }
+  setTimeout(typeNext, 1300);   /* begin after the kalasham settles */
+})();
+
+/* ── 3D TILT — cover behaves like a card held in the hand ── */
+(function(){
+  if(reduceMotion) return;
+  const card = document.getElementById('tiltCard');
+  const mandala = document.getElementById('mandalaWrap');
+  const p1 = document.getElementById('p1');
+  const MAXDEG = 6, MAXPAR = 26;
+  let tx = 0, ty = 0;        /* target -1..1 */
+  let cx = 0, cy = 0;        /* current, eased */
+  let raf = null;
+
+  function render(){
+    cx += (tx - cx) * 0.08;
+    cy += (ty - cy) * 0.08;
+    card.style.transform =
+      `rotateX(${(-cy * MAXDEG).toFixed(2)}deg) rotateY(${(cx * MAXDEG).toFixed(2)}deg)`;
+    /* mandala drifts the opposite way — feels like depth behind the card */
+    mandala.style.setProperty('--px', (-cx * MAXPAR).toFixed(1) + 'px');
+    mandala.style.setProperty('--py', (-cy * MAXPAR).toFixed(1) + 'px');
+    if(Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001)
+      raf = requestAnimationFrame(render);
+    else raf = null;
+  }
+  function setTarget(x, y){
+    tx = Math.max(-1, Math.min(1, x));
+    ty = Math.max(-1, Math.min(1, y));
+    if(!raf) raf = requestAnimationFrame(render);
+  }
+
+  /* desktop: follow the mouse */
+  p1.addEventListener('mousemove', e => {
+    const r = p1.getBoundingClientRect();
+    setTarget(((e.clientX - r.left) / r.width) * 2 - 1,
+              ((e.clientY - r.top) / r.height) * 2 - 1);
+  });
+  p1.addEventListener('mouseleave', () => setTarget(0, 0));
+
+  /* mobile: gyroscope, calibrated to how the phone is first held */
+  let baseB = null, baseG = null;
+  function onOrient(e){
+    if(e.beta == null || e.gamma == null) return;
+    if(baseB === null){ baseB = e.beta; baseG = e.gamma; }
+    setTarget((e.gamma - baseG) / 22, (e.beta - baseB) / 22);
+  }
+  function startGyro(){
+    window.addEventListener('deviceorientation', onOrient);
+  }
+  if(typeof DeviceOrientationEvent !== 'undefined' &&
+     typeof DeviceOrientationEvent.requestPermission === 'function'){
+    /* iOS asks permission — request on the guest's first touch */
+    const ask = () => {
+      DeviceOrientationEvent.requestPermission()
+        .then(state => { if(state === 'granted') startGyro(); })
+        .catch(() => {});
+      document.removeEventListener('touchend', ask);
+    };
+    document.addEventListener('touchend', ask);
+  } else {
+    startGyro();
+  }
+})();
+
+
 const kal = document.getElementById('kalasham');
 function shower(){
   if(reduceMotion) return;

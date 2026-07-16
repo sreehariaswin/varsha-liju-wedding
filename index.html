@@ -381,6 +381,25 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
 /* hold hero animations until the cover is opened */
 body.covered :is(.om,.kalasham,.request-line,.names,.p1-date,.swipe){animation-play-state:paused}
 
+/* ── music toggle ── */
+.music-btn{
+  position:fixed;right:14px;bottom:14px;z-index:40;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(179,135,58,0.6);
+  background:rgba(255,253,246,0.85);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--gold-deep);
+  box-shadow:0 4px 12px rgba(138,100,32,0.2);
+  transition:transform 0.2s;
+}
+.music-btn:active{transform:scale(0.92)}
+.music-btn.show{display:flex}
+.music-btn svg{width:18px;height:18px}
+.music-btn .off{display:none}
+.music-btn.muted .on{display:none}
+.music-btn.muted .off{display:block}
+
 /* ═══ ANIMATIONS ═══ */
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:0.4;transform:scaleY(0.6)}50%{opacity:1;transform:scaleY(1)}}
@@ -433,6 +452,12 @@ body.covered :is(.om,.kalasham,.request-line,.names,.p1-date,.swipe){animation-p
     <p class="cover-hint">Tap to open the invite ›</p>
   </div>
 </div>
+
+<audio id="bgm" src="music.mp3" loop preload="auto"></audio>
+<button class="music-btn" id="musicBtn" aria-label="Mute or unmute music">
+  <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>
+  <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V6l10-2v6"/><circle cx="6.5" cy="18" r="2.5"/><line x1="15" y1="14" x2="21" y2="20"/><line x1="21" y1="14" x2="15" y2="20"/></svg>
+</button>
 
 <nav class="dots" aria-label="Pages">
   <a href="#p1" data-dot="p1" aria-label="Cover"></a>
@@ -802,6 +827,33 @@ if(!reduceMotion){
   }
   cover.addEventListener('click', openCover);
   cover.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openCover(); } });
+})();
+
+/* ── MUSIC: begins as the cover lifts (the tap counts as the user gesture) ── */
+(function(){
+  const bgm = document.getElementById('bgm');
+  const btn = document.getElementById('musicBtn');
+  if(!bgm || !btn) return;
+  let available = true;
+  bgm.addEventListener('error', () => { available = false; });   /* no music.mp3? stay silent */
+
+  function fadeIn(){
+    bgm.volume = 0;
+    bgm.play().then(() => {
+      btn.classList.add('show');
+      const iv = setInterval(() => {
+        bgm.volume = Math.min(0.55, bgm.volume + 0.03);   /* settle at a soft 55% */
+        if(bgm.volume >= 0.55) clearInterval(iv);
+      }, 120);
+    }).catch(() => {});     /* if the browser still refuses, fail silently */
+  }
+  window.addEventListener('cover-opened', () => { if(available) fadeIn(); }, {once:true});
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if(bgm.paused){ bgm.play().catch(()=>{}); btn.classList.remove('muted'); }
+    else { bgm.pause(); btn.classList.add('muted'); }
+  });
 })();
 
 /* ── MARIGOLD SHOWERS — nobody has to discover anything ── */

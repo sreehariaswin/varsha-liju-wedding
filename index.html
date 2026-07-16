@@ -284,36 +284,6 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
 }
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
 
-/* ── the couple in an arch frame — sepia that blooms to life on touch ── */
-.portrait-wrap{
-  margin:0 auto 0.5rem;display:inline-block;position:relative;
-  cursor:pointer;-webkit-tap-highlight-color:transparent;
-  -webkit-touch-callout:none;user-select:none;-webkit-user-select:none;
-}
-.portrait{
-  width:clamp(170px,40vw,240px);
-  aspect-ratio:3/4;object-fit:cover;object-position:50% 40%;
-  border-radius:999px 999px 14px 14px;   /* arch */
-  border:1px solid rgba(179,135,58,0.65);
-  box-shadow:
-    0 0 0 5px var(--bg),
-    0 0 0 6px rgba(179,135,58,0.5),
-    0 14px 34px rgba(138,100,32,0.18);
-  display:block;pointer-events:none;      /* wrap handles the events */
-}
-.portrait.color{
-  position:absolute;inset:0;width:100%;height:100%;
-  opacity:0;transition:opacity 1.3s ease;
-}
-.portrait-wrap.alive .portrait.color{opacity:1;transition:opacity 1.6s ease}
-.portrait-wrap::after{           /* tiny gold finial atop the arch */
-  content:'❖';position:absolute;top:-17px;left:50%;transform:translateX(-50%);
-  color:var(--gold);font-size:0.8rem;
-}
-.hold-hint{
-  font-style:italic;font-size:0.8rem;color:var(--text-soft);
-  opacity:0.65;margin-bottom:0.9rem;
-}
 /* ════════ PAGE 3 · COUNTDOWN & BLESSING ════════ */
 .cd-title{
   font-family:'Great Vibes',cursive;
@@ -355,6 +325,62 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
   opacity:0.6;margin-top:1.6rem;
 }
 
+/* ════════ THE COVER — mandapam artwork, lifts like a veil ════════ */
+.cover{
+  position:fixed;inset:0;z-index:60;
+  background:#deccb7;                     /* exact artwork background */
+  cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;
+  transition:transform 1.4s cubic-bezier(.7,0,.3,1), opacity 0.9s ease 0.6s;
+  overflow:hidden;
+}
+.cover.opening{transform:translateY(-103%);opacity:0.98}
+.cover.away{opacity:0;pointer-events:none}
+.cover-art{
+  position:absolute;right:0;bottom:0;height:100%;width:100%;
+  object-fit:contain;object-position:right bottom;
+  pointer-events:none;
+}
+.cover-text{
+  position:absolute;top:clamp(1.6rem,6vh,4.5rem);left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:0.55rem;
+  text-align:center;z-index:2;pointer-events:none;
+  padding:0 1.2rem;
+}
+.cover-om{
+  font-size:clamp(1.2rem,3.5vw,1.6rem);color:#7d3324;opacity:0.9;
+}
+.cover-names{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.5rem,10vw,3.9rem);
+  color:#6d3a1c;line-height:1.25;            /* warm carved-wood brown */
+  text-shadow:0 1px 0 rgba(255,250,240,0.55);
+}
+.cover-rule{width:min(50vw,210px);height:1px;
+  background:linear-gradient(to right,transparent,#8a6420,transparent)}
+.cover-sub{
+  font-family:'Playfair Display',serif;font-weight:600;
+  font-size:clamp(0.62rem,1.9vw,0.78rem);
+  letter-spacing:0.5em;text-transform:uppercase;
+  color:#7d3324;
+}
+.cover-hint{
+  font-family:'Playfair Display',serif;
+  font-size:0.6rem;letter-spacing:0.42em;text-transform:uppercase;
+  color:#6d5a42;margin-top:0.7rem;
+  animation:hintPulse 2.2s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:0.45}50%{opacity:0.95}}
+/* wide screens: art anchors right, words breathe on the left */
+@media(min-width:920px){
+  .cover-text{
+    left:6%;right:auto;top:50%;transform:translateY(-50%);
+    align-items:flex-start;text-align:left;max-width:44%;
+  }
+  .cover-rule{background:linear-gradient(to right,#8a6420,transparent)}
+}
+/* hold hero animations until the cover is opened */
+body.covered :is(.om,.kalasham,.request-line,.names,.p1-date,.swipe){animation-play-state:paused}
+
 /* ═══ ANIMATIONS ═══ */
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:0.4;transform:scaleY(0.6)}50%{opacity:1;transform:scaleY(1)}}
@@ -392,9 +418,21 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
 }
 </style>
 </head>
-<body>
+<body class="covered">
 
 <canvas id="petals"></canvas>
+
+<!-- ══════════ MANDAPAM COVER ══════════ -->
+<div class="cover" id="cover" role="button" tabindex="0" aria-label="Open the wedding invitation">
+  <img class="cover-art" src="cover-art.jpg" alt="" aria-hidden="true" draggable="false">
+  <div class="cover-text">
+    <span class="cover-om">ॐ</span>
+    <p class="cover-names">Varsha &amp; Liju</p>
+    <div class="cover-rule"></div>
+    <p class="cover-sub">Wedding Invitation</p>
+    <p class="cover-hint">Tap to open</p>
+  </div>
+</div>
 
 <nav class="dots" aria-label="Pages">
   <a href="#p1" data-dot="p1" aria-label="Cover"></a>
@@ -555,15 +593,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
   <!-- ══════════ PAGE 3 · COUNTDOWN & BLESSING ══════════ -->
   <section class="page" id="p3">
     <div class="inner">
-      <div class="portrait-wrap reveal" id="livePortrait">
-        <img class="portrait" src="couple-sepia.jpg" alt="Varsha and Liju"
-             loading="lazy" draggable="false"
-             onerror="this.parentElement.style.display='none';document.getElementById('holdHint').style.display='none'">
-        <img class="portrait color" src="couple-color.jpg" alt=""
-             loading="lazy" draggable="false" aria-hidden="true"
-             onerror="this.remove();document.getElementById('holdHint').style.display='none'">
-      </div>
-      <p class="hold-hint reveal" id="holdHint">press &amp; hold — watch us come to life ✨</p>
       <span class="eyebrow reveal">The auspicious hour approaches</span>
       <p class="cd-title reveal">Counting down</p>
       <p class="cd-sub reveal d2">to the muhurtham — 13 September 2026, 9:30 AM</p>
@@ -752,19 +781,27 @@ if(!reduceMotion){
     if(ci >= txt.length){ li++; ci = 0; setTimeout(typeNext, 320); }
     else setTimeout(typeNext, 26 + Math.random() * 46);   /* uneven, like a hand writing */
   }
-  setTimeout(typeNext, 1300);   /* begin after the kalasham settles */
+  const begin = () => setTimeout(typeNext, 1300);
+  if(document.getElementById('cover')) window.addEventListener('cover-opened', begin, {once:true});
+  else begin();
 })();
 
-/* ── SEPIA-TO-LIFE portrait: press & hold, colour blooms through ── */
+/* ── SEALED COVER: untie, open, and enter ── */
 (function(){
-  const wrap = document.getElementById('livePortrait');
-  if(!wrap) return;
-  const on  = e => { e.preventDefault(); wrap.classList.add('alive'); };
-  const off = () => wrap.classList.remove('alive');
-  wrap.addEventListener('pointerdown', on);
-  ['pointerup','pointercancel','pointerleave'].forEach(ev =>
-    wrap.addEventListener(ev, off));
-  wrap.addEventListener('contextmenu', e => e.preventDefault());  /* no long-press menu */
+  const cover = document.getElementById('cover');
+  if(!cover) return;
+  function openCover(){
+    if(cover.classList.contains('opening')) return;
+    cover.classList.add('opening');
+    setTimeout(() => {
+      cover.classList.add('away');
+      document.body.classList.remove('covered');   /* hero animations begin now */
+      window.dispatchEvent(new Event('cover-opened'));
+    }, 1150);
+    setTimeout(() => cover.remove(), 2100);
+  }
+  cover.addEventListener('click', openCover);
+  cover.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openCover(); } });
 })();
 
 /* ── MARIGOLD SHOWERS — nobody has to discover anything ── */

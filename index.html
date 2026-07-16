@@ -162,7 +162,7 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
 /* names — burnished gold with a gentle light sweep (no washout) */
 .name{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(1.9rem,7.6vw,3.9rem);
+  font-size:clamp(2.2rem,8.4vw,4.4rem);
   line-height:1.4;display:block;
   white-space:nowrap;
   background:linear-gradient(100deg,
@@ -348,7 +348,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
 
 /* ═══ MOBILE ═══ */
 @media(max-width:480px){
-  .name{font-size:clamp(1.7rem,7.4vw,2.6rem)}
+  .name{font-size:clamp(2.05rem,9.6vw,3.1rem)}
+  .request-line{font-size:0.94rem}   /* blessing steps back so the names lead */
+  .with{font-size:0.6rem}
   .parents{flex-direction:column;align-items:center;gap:1.1rem}
   .pdiv{width:60px;height:1px;
     background:linear-gradient(to right,transparent,var(--gold),transparent)}

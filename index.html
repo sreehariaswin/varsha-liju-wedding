@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Varsha &amp; Liju — Wedding Invitation</title>
 
-
+<!-- ── WhatsApp / Social preview ──
+     Replace YOUR-USERNAME / YOUR-REPO with your GitHub details after deploying,
+     and upload a preview.jpg (1200x630) for the link thumbnail. -->
 <meta name="description" content="Wedding of Varsha & Liju — Sunday, 13 September 2026 · Muhurtham 9:30–10:00 AM · St. Mary's Convention Centre, Nellayi, Thrissur."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://YOUR-USERNAME.github.io/YOUR-REPO/"/>
@@ -112,6 +114,17 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   width:100%;height:100%;display:block;opacity:0.35;
   animation:spin 90s linear infinite;
 }
+/* ── cover composition: invocation & kalasham on top, names centered in the chakra ── */
+#p1 .inner{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:calc(100svh - clamp(3.2rem,8vw,6rem));
+}
+.cover-top{margin-top:clamp(0.6rem,3vh,1.8rem)}
+.cover-mid{
+  margin-top:auto;margin-bottom:auto;
+  transform:translateY(clamp(-3.4rem,-4.5vh,-2.4rem));  /* raise by ~half the blessing height → names hit dead center */
+}
+.cover-bottom{margin-bottom:clamp(2.6rem,7vh,3.6rem)}  /* clears the swipe hint */
 /* ── typed-out blessing ── */
 .request-line{min-height:calc(1.9em * 3)}  /* reserve 3 lines so nothing jumps */
 .caret{
@@ -145,20 +158,21 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   line-height:1.9;color:var(--text-soft);
   opacity:0;animation:rise 1s 0.7s forwards;
 }
-.names{opacity:0;animation:rise 1.3s 1s forwards;margin:1rem 0 0.3rem}
-/* ✨ liquid-gold shimmer flowing through the names */
+.names{opacity:0;animation:rise 1.3s 1s forwards;margin:0.7rem 0 0}
+/* names — burnished gold with a gentle light sweep (no washout) */
 .name{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(3rem,11vw,5.2rem);
-  line-height:1.25;display:block;
+  font-size:clamp(1.9rem,7.6vw,3.9rem);
+  line-height:1.4;display:block;
+  white-space:nowrap;
   background:linear-gradient(100deg,
-    #8a6420 0%, #b3873a 22%, #eed9a0 40%, #f7ecc8 50%,
-    #eed9a0 60%, #b3873a 78%, #8a6420 100%);
-  background-size:220% auto;
+    #7d5a1c 0%, #a07a2c 30%, #c9a552 48%, #d9bb7a 52%,
+    #c9a552 56%, #a07a2c 70%, #7d5a1c 100%);
+  background-size:200% auto;
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
-  animation:shimmer 5.5s ease-in-out infinite;
-  filter:drop-shadow(0 1px 1px rgba(138,100,32,0.25));
+  animation:shimmer 9s ease-in-out infinite;
+  filter:drop-shadow(0 1px 1px rgba(125,90,28,0.3));
 }
 .with{
   font-family:'Playfair Display',serif;
@@ -167,7 +181,7 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   color:var(--accent);display:block;margin:0.4rem 0;
 }
 .p1-date{
-  opacity:0;animation:rise 1s 1.4s forwards;margin-top:1.3rem;
+  opacity:0;animation:rise 1s 1.4s forwards;
   display:inline-flex;flex-direction:column;align-items:center;
 }
 .p1-date .rule{width:clamp(200px,55vw,360px);height:1px;
@@ -179,13 +193,15 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   color:var(--gold-deep);padding:0.55rem 0;
 }
 .swipe{
-  position:absolute;bottom:1.4rem;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:1.4rem;left:0;right:0;
   display:flex;flex-direction:column;align-items:center;gap:0.3rem;
   opacity:0;animation:rise 1s 2.2s forwards;z-index:2;
+  pointer-events:none;
 }
 .swipe span{
   font-family:'Playfair Display',serif;font-size:0.5rem;
-  letter-spacing:0.5em;text-transform:uppercase;color:var(--text-soft);opacity:0.65;
+  letter-spacing:0.5em;margin-right:-0.5em;  /* cancel trailing tracking so text is optically centered */
+  text-transform:uppercase;color:var(--text-soft);opacity:0.65;
 }
 .swipe .ln{width:1px;height:26px;
   background:linear-gradient(to bottom,var(--gold),transparent);
@@ -313,8 +329,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:0.4;transform:scaleY(0.6)}50%{opacity:1;transform:scaleY(1)}}
 @keyframes sway{0%,100%{transform:rotate(0)}35%{transform:rotate(1.5deg)}70%{transform:rotate(-1.3deg)}}
-@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:100% center}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:100% center}}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.9s ease, transform 0.9s ease}
 .reveal.on{opacity:1;transform:none}
 .reveal.d2{transition-delay:0.15s}
@@ -325,14 +341,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
   *,*::before,*::after{animation:none!important;transition:none!important}
   .om,.kalasham,.request-line,.names,.p1-date,.swipe{opacity:1}
   .reveal{opacity:1;transform:none}
+  .name{background:none;-webkit-text-fill-color:#8a6420;color:#8a6420;animation:none}
   canvas#petals{display:none}
   .pages{scroll-snap-type:none}
-  .name{background:none;-webkit-text-fill-color:var(--gold-deep);color:var(--gold-deep)}
 }
 
 /* ═══ MOBILE ═══ */
 @media(max-width:480px){
-  .name{font-size:clamp(2.5rem,13vw,3.4rem)}
+  .name{font-size:clamp(1.7rem,7.4vw,2.6rem)}
   .parents{flex-direction:column;align-items:center;gap:1.1rem}
   .pdiv{width:60px;height:1px;
     background:linear-gradient(to right,transparent,var(--gold),transparent)}
@@ -393,6 +409,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
     </div>
 
     <div class="inner">
+      <div class="cover-top">
       <p class="om">ॐ श्री गणेशाय नमः</p>
 
       <!-- Purna Kumbham — tap for a shower of blessings -->
@@ -425,6 +442,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
         </svg>
       </div>
 
+      </div>
+
+      <div class="cover-mid">
       <p class="request-line" id="typeLine" aria-label="Together with our families, we request the honour of your presence at the wedding ceremony of"><span id="tl1"></span><br>
         <span id="tl2"></span><br>
         <span id="tl3"></span><span class="caret" id="caret" aria-hidden="true"></span></p>
@@ -435,10 +455,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
         <span class="name">Liju Lalesh</span>
       </div>
 
+      </div>
+
+      <div class="cover-bottom">
       <div class="p1-date">
         <div class="rule"></div>
         <p class="txt">Sunday · 13 September 2026</p>
         <div class="rule"></div>
+      </div>
       </div>
     </div>
 

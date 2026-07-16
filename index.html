@@ -284,22 +284,35 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
 }
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
 
-/* ── the couple, sketched in gold — arch frame like a temple doorway ── */
-.portrait-wrap{margin:0 auto 1.1rem;display:inline-block;position:relative}
+/* ── the couple in an arch frame — sepia that blooms to life on touch ── */
+.portrait-wrap{
+  margin:0 auto 0.5rem;display:inline-block;position:relative;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;user-select:none;-webkit-user-select:none;
+}
 .portrait{
-  width:clamp(150px,34vw,210px);
-  aspect-ratio:3/4;object-fit:cover;object-position:50% 18%;
+  width:clamp(170px,40vw,240px);
+  aspect-ratio:3/4;object-fit:cover;object-position:50% 40%;
   border-radius:999px 999px 14px 14px;   /* arch */
   border:1px solid rgba(179,135,58,0.65);
   box-shadow:
     0 0 0 5px var(--bg),
     0 0 0 6px rgba(179,135,58,0.5),
     0 14px 34px rgba(138,100,32,0.18);
-  display:block;
+  display:block;pointer-events:none;      /* wrap handles the events */
 }
+.portrait.color{
+  position:absolute;inset:0;width:100%;height:100%;
+  opacity:0;transition:opacity 1.3s ease;
+}
+.portrait-wrap.alive .portrait.color{opacity:1;transition:opacity 1.6s ease}
 .portrait-wrap::after{           /* tiny gold finial atop the arch */
   content:'❖';position:absolute;top:-17px;left:50%;transform:translateX(-50%);
   color:var(--gold);font-size:0.8rem;
+}
+.hold-hint{
+  font-style:italic;font-size:0.8rem;color:var(--text-soft);
+  opacity:0.65;margin-bottom:0.9rem;
 }
 /* ════════ PAGE 3 · COUNTDOWN & BLESSING ════════ */
 .cd-title{
@@ -542,10 +555,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold-deep);outline-
   <!-- ══════════ PAGE 3 · COUNTDOWN & BLESSING ══════════ -->
   <section class="page" id="p3">
     <div class="inner">
-      <div class="portrait-wrap reveal">
-        <img class="portrait" src="couple.jpg" alt="Varsha and Liju"
-             loading="lazy" onerror="this.parentElement.style.display='none'">
+      <div class="portrait-wrap reveal" id="livePortrait">
+        <img class="portrait" src="couple-sepia.jpg" alt="Varsha and Liju"
+             loading="lazy" draggable="false"
+             onerror="this.parentElement.style.display='none';document.getElementById('holdHint').style.display='none'">
+        <img class="portrait color" src="couple-color.jpg" alt=""
+             loading="lazy" draggable="false" aria-hidden="true"
+             onerror="this.remove();document.getElementById('holdHint').style.display='none'">
       </div>
+      <p class="hold-hint reveal" id="holdHint">press &amp; hold — watch us come to life ✨</p>
       <span class="eyebrow reveal">The auspicious hour approaches</span>
       <p class="cd-title reveal">Counting down</p>
       <p class="cd-sub reveal d2">to the muhurtham — 13 September 2026, 9:30 AM</p>
@@ -735,6 +753,18 @@ if(!reduceMotion){
     else setTimeout(typeNext, 26 + Math.random() * 46);   /* uneven, like a hand writing */
   }
   setTimeout(typeNext, 1300);   /* begin after the kalasham settles */
+})();
+
+/* ── SEPIA-TO-LIFE portrait: press & hold, colour blooms through ── */
+(function(){
+  const wrap = document.getElementById('livePortrait');
+  if(!wrap) return;
+  const on  = e => { e.preventDefault(); wrap.classList.add('alive'); };
+  const off = () => wrap.classList.remove('alive');
+  wrap.addEventListener('pointerdown', on);
+  ['pointerup','pointercancel','pointerleave'].forEach(ev =>
+    wrap.addEventListener(ev, off));
+  wrap.addEventListener('contextmenu', e => e.preventDefault());  /* no long-press menu */
 })();
 
 /* ── MARIGOLD SHOWERS — nobody has to discover anything ── */
